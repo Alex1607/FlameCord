@@ -27,8 +27,24 @@ jobs:
       run: sh scripts/build.sh --jar
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Upload Jar
-      uses: actions/upload-artifact@v2
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: FlameCord.jar
-        path: FlameCord-Proxy/bootstrap/target/FlameCord.jar    
+        tag_name: v1.0
+        release_name: Release v1.0
+        body: ""
+        draft: true
+        prerelease: false
+    - name: Upload Artifact
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./FlameCord-Proxy/bootstrap/target/FlameCord.jar
+        asset_name: FlameCord.jar
+        asset_content_type: application/java-archive
