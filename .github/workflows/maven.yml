@@ -32,8 +32,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
       with:
-        tag_name: v${{ env.GITHUB_REF_TYPE }}
-        release_name: Release v${{ env.GITHUB_REF_TYPE }}
+        tag_name: v${env.GITHUB_REF_TYPE}
+        release_name: Release v${env.GITHUB_REF_TYPE}
         body: "Automatic release"
         draft: true
         prerelease: false
